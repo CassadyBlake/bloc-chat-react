@@ -6,11 +6,13 @@ class MessageList extends Component {
 
     this.state = {
       roomName: 'room1',
-      messages: []
+      messages: [],
+      value: ''
     };
 
     this.roomsRef = this.props.firebase.database().ref('messages');
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -26,17 +28,26 @@ class MessageList extends Component {
 
   handleSubmit(event) {
     this.roomsRef.push({
-      name: this.state.value
+      message: this.state.value
     });
     this.setState({ value: '' });
     event.preventDefault();
   }
 
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
 
 render() {
   return(
     <div id="message-room">
       <h2>{this.state.roomName}</h2>
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          UserName<input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Send" />
+      </form>
         <table id="message-board">
         {
           this.state.messages.map( (messages, index) =>

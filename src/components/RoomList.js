@@ -38,6 +38,7 @@ class RoomList extends Component {
   }
 
 
+
   render() {
     return(
       <nav>
@@ -52,7 +53,7 @@ class RoomList extends Component {
           <tbody>
             {
               this.state.rooms.map( (rooms, index) =>
-              <tr key={index} className="rooms">{ this.state.rooms[index].name }</tr>
+              <tr key={index} className="rooms" onClick={this.props.changeActiveRoom(this.state.rooms[index].name)}>{ this.state.rooms[index].name }</tr>
               )
             }
           </tbody>
