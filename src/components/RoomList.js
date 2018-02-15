@@ -31,7 +31,7 @@ class RoomList extends Component {
 
   handleSubmit(event) {
     this.roomsRef.push({
-      name: this.state.value
+      name: this.state.value,
     });
     this.setState({ value: '' });
     event.preventDefault();
