@@ -5,43 +5,32 @@ class MessageList extends Component {
     super(props);
 
     this.state = {
-      roomName: 'room1',
-      messages: [],
       value: ''
     };
 
-    this.roomsRef = this.props.firebase.database().ref('messages');
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.messagesRef = this.props.firebase.database().ref('messages');
   }
 
-  componentDidMount() {
-    this.roomsRef.on('child_added', snapshot => {
-      const message = snapshot.val();
-      console.log(message);
-      message.key = snapshot.key;
-      console.log(message.key);
-      this.setState({ messages: this.state.messages.concat( message ) })
-      console.log(this.state.messages);
-    });
-  }
 
-  handleSubmit(event) {
-    this.roomsRef.push({
-      message: this.state.value
+  handleSubmit = (event) => {
+    this.messagesRef.push({
+      username: 'Admin',
+      content: this.state.value,
+      sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
+      roomId: this.props.activeRoomId
     });
     this.setState({ value: '' });
     event.preventDefault();
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({ value: event.target.value });
   }
 
 render() {
   return(
     <div id="message-room">
-      <h2>{this.state.roomName}</h2>
+      <h2>{this.props.activeRoom}</h2>
       <form onSubmit={this.handleSubmit}>
         <label>
           UserName<input type="text" value={this.state.value} onChange={this.handleChange} />
@@ -50,8 +39,8 @@ render() {
       </form>
         <table id="message-board">
         {
-          this.state.messages.map( (messages, index) =>
-          <tr key={index} className="messages">{ this.state.messages[index].message }</tr>
+          this.props.displayedMessages.map( (message, index) =>
+          <tr key={index} className="messages">{ message.content }</tr>
         )
         }
         </table>
@@ -61,3 +50,6 @@ render() {
 }
 
 export default MessageList;
+
+//this.setState({ displayedMessages: this.state.messages.map(this.state.messages.roomId == this.props.activeRoomId) });
+//console.log(this.state.displayedMessages);

@@ -10,26 +10,21 @@ class RoomList extends Component {
     };
 
     this.roomsRef = this.props.firebase.database().ref('rooms');
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
     this.roomsRef.on('child_added', snapshot => {
       const room = snapshot.val();
-      console.log(room);
       room.key = snapshot.key;
-      console.log(room.key);
-      this.setState({ rooms: this.state.rooms.concat( room ) })
-      console.log(this.state.rooms);
+      this.setState({ rooms: this.state.rooms.concat( room ) });
     });
   }
 
-  handleChange(event) {
-    this.setState({ value: event.target.value })
+  handleChange = (event) => {
+    this.setState({ value: event.target.value });
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     this.roomsRef.push({
       name: this.state.value,
     });
@@ -52,8 +47,8 @@ class RoomList extends Component {
         <table id="roomList">
           <tbody>
             {
-              this.state.rooms.map( (rooms, index) =>
-              <tr key={index} className="rooms" onClick={this.props.changeActiveRoom(this.state.rooms[index].name)}>{ this.state.rooms[index].name }</tr>
+              this.state.rooms.map( (room, index) =>
+              <tr key={index} className="rooms" onClick={() => this.props.changeActiveRoom( room )}>{ room.name }</tr>
               )
             }
           </tbody>
