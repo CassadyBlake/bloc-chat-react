@@ -38,11 +38,13 @@ render() {
         <input type="submit" value="Send" />
       </form>
         <table id="message-board">
-        {
-          this.props.displayedMessages.map( (message, index) =>
-          <tr key={index} className="messages">{ message.content }</tr>
-        )
-        }
+          <tbody>
+            {
+                this.props.displayedMessages.map( (message, index) =>
+                <tr key={index} className="messages">{ message.content }</tr>
+                )
+            }
+          </tbody>
         </table>
     </div>
   )

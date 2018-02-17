@@ -33,16 +33,10 @@ class App extends Component {
     this.messagesRef.on('child_added', snapshot => {
       const message = snapshot.val();
       message.key = snapshot.key;
-      this.setState({ messages: this.state.messages.concat( message ) });
+      const newMessages = this.state.messages.concat(message)
+      this.setState({ messages: newMessages });
+      this.setState({ displayedMessages: newMessages.filter(message => message.roomId === this.state.activeRoomId) });
       });
-  }
-
-  setDisplayedMessages() {
-    const activeRoomId = this.state.activeRoomId;
-    const messages = this.state.messages;
-    const newDisplayedMessages = messages.filter(message => message.roomId === activeRoomId);
-    this.setState({ displayedMessages: newDisplayedMessages });
-
   }
 
   changeActiveRoom( room ) {
@@ -50,7 +44,7 @@ class App extends Component {
     const newRoomKey = room.key;
     this.setState({ activeRoom: newRoomName });
     this.setState({ activeRoomId: newRoomKey });
-    this.setDisplayedMessages();
+    this.setState({ displayedMessages: this.state.messages.filter(message => message.roomId === newRoomKey) });
   }
 
   render() {
@@ -62,7 +56,6 @@ class App extends Component {
             activeRoom={this.state.activeRoom}
             activeRoomId={this.state.activeRoomId}
             changeActiveRoom={( room ) => this.changeActiveRoom( room )}
-            setDisplayedMessages={() => this.setDisplayedMessages()}
           />
         </header>
         <main>
@@ -71,7 +64,6 @@ class App extends Component {
             activeRoom={this.state.activeRoom}
             activeRoomId={this.state.activeRoomId}
             displayedMessages={this.state.displayedMessages}
-            setDisplayedMessages={() => this.setDisplayedMessages()}
           />
         </main>
       </div>
