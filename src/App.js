@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import './App.css';
 import RoomList from './components/RoomList';
 import MessageList from './components/MessageList';
+import User from './components/User';
 
   // Initialize Firebase
   var config = {
@@ -22,6 +23,7 @@ class App extends Component {
     this.state = {
       activeRoom: '',
       activeRoomId: '',
+      activeUser: [],
       messages: [],
       displayedMessages: []
     };
@@ -35,28 +37,45 @@ class App extends Component {
       message.key = snapshot.key;
       const newMessages = this.state.messages.concat(message)
       this.setState({ messages: newMessages });
-      this.setState({ displayedMessages: newMessages.filter(message => message.roomId === this.state.activeRoomId) });
+      this.setDisplayedMessages(this.state.activeRoomId, newMessages);
       });
   }
 
-  changeActiveRoom( room ) {
+  setUser = ( user ) => {
+    const newUser = user;
+    this.setState({ activeUser: newUser });
+  }
+
+  setDisplayedMessages = ( aRoom, nMessages ) => {
+      this.setState({ displayedMessages: nMessages.filter(message => message.roomId === aRoom) });
+  }
+
+  changeActiveRoom = ( room ) => {
     const newRoomName = room.name;
     const newRoomKey = room.key;
     this.setState({ activeRoom: newRoomName });
     this.setState({ activeRoomId: newRoomKey });
-    this.setState({ displayedMessages: this.state.messages.filter(message => message.roomId === newRoomKey) });
+    this.setDisplayedMessages( newRoomKey, this.state.messages );
   }
 
   render() {
     return (
       <div className="App">
         <header>
-          < RoomList
-            firebase={firebase}
-            activeRoom={this.state.activeRoom}
-            activeRoomId={this.state.activeRoomId}
-            changeActiveRoom={( room ) => this.changeActiveRoom( room )}
-          />
+          <h1>Bloc Chat</h1>
+            <nav>
+              < User
+                firebase={firebase}
+                setUser={this.setUser}
+                activeUser={this.state.activeUser}
+                />
+                < RoomList
+                firebase={firebase}
+                activeRoom={this.state.activeRoom}
+                activeRoomId={this.state.activeRoomId}
+                changeActiveRoom={this.changeActiveRoom}
+                />
+            </nav>
         </header>
         <main>
           < MessageList

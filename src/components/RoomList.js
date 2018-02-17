@@ -36,8 +36,7 @@ class RoomList extends Component {
 
   render() {
     return(
-      <nav>
-        <h1>Bloc Chat</h1>
+      <div className="room-display">
         <form onSubmit={this.handleSubmit}>
           <label>
             Room name:<input type="text" value={this.state.value} onChange={this.handleChange} />
@@ -53,7 +52,7 @@ class RoomList extends Component {
             }
           </tbody>
         </table>
-      </nav>
+      </div>
       );
     }
 }
