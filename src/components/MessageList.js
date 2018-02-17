@@ -14,7 +14,7 @@ class MessageList extends Component {
 
   handleSubmit = (event) => {
     this.messagesRef.push({
-      username: 'Admin',
+      username: this.props.displayName,
       content: this.state.value,
       sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
       roomId: this.props.activeRoomId
@@ -33,7 +33,7 @@ render() {
       <h2>{this.props.activeRoom}</h2>
       <form onSubmit={this.handleSubmit}>
         <label>
-          UserName<input type="text" value={this.state.value} onChange={this.handleChange} />
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Send" />
       </form>
@@ -41,7 +41,11 @@ render() {
           <tbody>
             {
                 this.props.displayedMessages.map( (message, index) =>
-                <tr key={index} className="messages">{ message.content }</tr>
+                <tr key={index} className="messages">
+                  <td>
+                    <h3>{ message.username }</h3>{ message.content }
+                  </td>
+                </tr>
                 )
             }
           </tbody>

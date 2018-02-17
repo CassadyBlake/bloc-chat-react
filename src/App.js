@@ -25,7 +25,8 @@ class App extends Component {
       activeRoomId: '',
       activeUser: [],
       messages: [],
-      displayedMessages: []
+      displayedMessages: [],
+      displayName: ''
     };
 
     this.messagesRef = firebase.database().ref('messages');
@@ -44,6 +45,7 @@ class App extends Component {
   setUser = ( user ) => {
     const newUser = user;
     this.setState({ activeUser: newUser });
+    this.setState({ displayName: !newUser ? "Guest" : newUser.displayName });
   }
 
   setDisplayedMessages = ( aRoom, nMessages ) => {
@@ -65,6 +67,7 @@ class App extends Component {
           <h1>Bloc Chat</h1>
             <nav>
               < User
+                displayName={this.state.displayName}
                 firebase={firebase}
                 setUser={this.setUser}
                 activeUser={this.state.activeUser}
@@ -79,9 +82,11 @@ class App extends Component {
         </header>
         <main>
           < MessageList
+            displayName={this.state.displayName}
             firebase={firebase}
             activeRoom={this.state.activeRoom}
             activeRoomId={this.state.activeRoomId}
+            activeUser={this.state.activeUser}
             displayedMessages={this.state.displayedMessages}
           />
         </main>
