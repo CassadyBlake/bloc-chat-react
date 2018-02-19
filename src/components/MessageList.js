@@ -5,12 +5,31 @@ class MessageList extends Component {
     super(props);
 
     this.state = {
+      displayedMessages: [],
+      messages: [],
       value: undefined
     };
 
     this.messagesRef = this.props.firebase.database().ref('messages');
   }
 
+  componentDidMount() {
+    this.messagesRef.on('child_added', snapshot => {
+      const message = snapshot.val();
+      message.key = snapshot.key;
+      const newMessages = this.state.messages.concat(message)
+      this.setState({ messages: newMessages });
+      this.setDisplayedMessages(this.props.activeRoomId, newMessages);
+      });
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setDisplayedMessages( nextProps.activeRoomId, this.state.messages);
+  }
+
+  setDisplayedMessages = ( aRoom, nMessages ) => {
+      this.setState({ displayedMessages: nMessages.filter(message => message.roomId === aRoom) });
+  }
 
   handleSubmit = (event) => {
     this.messagesRef.push({
@@ -40,10 +59,10 @@ render() {
         <table id="message-board">
           <tbody>
             {
-                this.props.displayedMessages.map( (message, index) =>
+                this.state.displayedMessages.map( (message, index) =>
                 <tr key={index} className="messages">
                   <td>
-                    <p><h3>{ message.username }</h3>{ message.content }</p>
+                    <h3>{ message.username }</h3><p>{ message.content }</p>
                   </td>
                 </tr>
                 )

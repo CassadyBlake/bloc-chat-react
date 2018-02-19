@@ -24,22 +24,10 @@ class App extends Component {
       activeRoom: undefined,
       activeRoomId: undefined,
       activeUser: null,
-      messages: [],
-      displayedMessages: [],
       displayName: undefined
     };
 
-    this.messagesRef = firebase.database().ref('messages');
-  }
 
-  componentDidMount() {
-    this.messagesRef.on('child_added', snapshot => {
-      const message = snapshot.val();
-      message.key = snapshot.key;
-      const newMessages = this.state.messages.concat(message)
-      this.setState({ messages: newMessages });
-      this.setDisplayedMessages(this.state.activeRoomId, newMessages);
-      });
   }
 
   setUser = ( user ) => {
@@ -57,7 +45,6 @@ class App extends Component {
     const newRoomKey = room.key;
     this.setState({ activeRoom: newRoomName });
     this.setState({ activeRoomId: newRoomKey });
-    this.setDisplayedMessages( newRoomKey, this.state.messages );
   }
 
   render() {
@@ -87,7 +74,6 @@ class App extends Component {
             activeRoom={this.state.activeRoom}
             activeRoomId={this.state.activeRoomId}
             activeUser={this.state.activeUser}
-            displayedMessages={this.state.displayedMessages}
           />
         </main>
       </div>
