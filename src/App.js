@@ -21,8 +21,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      activeRoom: '',
-      activeRoomId: '',
+      activeRoom: null,
+      activeRoomId: null,
       activeUser: [],
       messages: [],
       displayedMessages: []

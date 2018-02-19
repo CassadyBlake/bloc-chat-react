@@ -5,7 +5,7 @@ class MessageList extends Component {
     super(props);
 
     this.state = {
-      value: ''
+      value: undefined
     };
 
     this.messagesRef = this.props.firebase.database().ref('messages');
@@ -41,7 +41,9 @@ render() {
           <tbody>
             {
                 this.props.displayedMessages.map( (message, index) =>
-                <tr key={index} className="messages">{ message.content }</tr>
+                <tr key={index} className="messages">
+                  <td><h3>{message.username}</h3>{ message.content }</td>
+                </tr>
                 )
             }
           </tbody>
