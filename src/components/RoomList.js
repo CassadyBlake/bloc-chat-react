@@ -6,7 +6,7 @@ class RoomList extends Component {
 
     this.state = {
       rooms: [],
-      value: ''
+      value: undefined
     };
 
     this.roomsRef = this.props.firebase.database().ref('rooms');
@@ -18,6 +18,16 @@ class RoomList extends Component {
       room.key = snapshot.key;
       this.setState({ rooms: this.state.rooms.concat( room ) });
     });
+  }
+
+  renameRoomClick = (roomKey, newName) => {
+    this.roomsRef.child(roomKey).update({name: newName})
+  }
+
+  deleteRoomClick = (roomKey, index) => {
+    const removeKey = this.state.rooms[index].key;
+    this.roomsRef.child(roomKey).remove();
+    this.setState({ rooms: this.state.rooms.filter(room => removeKey !== room.key) });
   }
 
   handleChange = (event) => {
@@ -47,7 +57,11 @@ class RoomList extends Component {
           <tbody>
             {
               this.state.rooms.map( (room, index) =>
-              <tr key={index} className="rooms" onClick={() => this.props.changeActiveRoom( room )}>{ room.name }</tr>
+              <tr key={index}>
+                <td className="rooms" onClick={() => this.props.changeActiveRoom( room )}>{ room.name }</td>
+
+                <td><button value="Delete" onClick={() => this.deleteRoomClick(room.key, index)}>Delete</button></td>
+              </tr>
               )
             }
           </tbody>
@@ -57,3 +71,6 @@ class RoomList extends Component {
     }
 }
 export default RoomList;
+
+
+//<td><button value="Rename" onClick={() => this.renameRoomClick(room.key, input)}>Rename</button></td>

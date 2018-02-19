@@ -5,7 +5,7 @@ class MessageList extends Component {
     super(props);
 
     this.state = {
-      value: ''
+      value: undefined
     };
 
     this.messagesRef = this.props.firebase.database().ref('messages');
@@ -43,7 +43,7 @@ render() {
                 this.props.displayedMessages.map( (message, index) =>
                 <tr key={index} className="messages">
                   <td>
-                    <h3>{ message.username }</h3>{ message.content }
+                    <p><h3>{ message.username }</h3>{ message.content }</p>
                   </td>
                 </tr>
                 )
@@ -56,6 +56,3 @@ render() {
 }
 
 export default MessageList;
-
-//this.setState({ displayedMessages: this.state.messages.map(this.state.messages.roomId == this.props.activeRoomId) });
-//console.log(this.state.displayedMessages);

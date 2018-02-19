@@ -21,12 +21,12 @@ class App extends Component {
     super(props);
 
     this.state = {
-      activeRoom: '',
-      activeRoomId: '',
-      activeUser: [],
+      activeRoom: undefined,
+      activeRoomId: undefined,
+      activeUser: null,
       messages: [],
       displayedMessages: [],
-      displayName: ''
+      displayName: undefined
     };
 
     this.messagesRef = firebase.database().ref('messages');
