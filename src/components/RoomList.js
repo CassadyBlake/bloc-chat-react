@@ -47,24 +47,29 @@ class RoomList extends Component {
   render() {
     return(
       <div className="room-display">
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Room name:<input type="text" value={this.state.value} onChange={this.handleChange} />
-          </label><br />
-          <input type="submit" value="Create Room" />
-        </form><br />
         <table id="roomList">
-          <tbody>
+          <form onSubmit={this.handleSubmit}>
+            <tbody>
+              <tr>
+                <td>
+                  <button type="submit" value="Create Room">Create</button>
+                </td>
+                <td>
+                  <label>
+                    <input type="text" placeholder="type new room name" value={this.state.value} onChange={this.handleChange} />
+                  </label>
+                </td>
+              </tr>
             {
               this.state.rooms.map( (room, index) =>
               <tr key={index}>
-                <td className="rooms" onClick={() => this.props.changeActiveRoom( room )}>{ room.name }</td>
-
                 <td><button value="Delete" onClick={() => this.deleteRoomClick(room.key, index)}>Delete</button></td>
+                <td className="rooms" onClick={() => this.props.changeActiveRoom( room )}>{ room.name }</td>
               </tr>
               )
             }
           </tbody>
+          </form>
         </table>
       </div>
       );

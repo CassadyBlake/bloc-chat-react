@@ -28,12 +28,22 @@ class User extends Component {
   render() {
     return(
       <div className="signIn-buttons">
-        <h3>User Name: {this.props.displayName}</h3>
-        {
-          this.props.activeUser
-          ? <button className="sign-out" value="Sign Out" onClick={ this.handleSignOutClick }>Sign Out</button>
-          : <button className="sign-in" value="Sign In" onClick={ this.handleSignInClick }>Sign In</button>
-        }
+        <table>
+          <tbody>
+            <tr>
+              <td>
+            {
+              this.props.activeUser
+              ? <button className="sign-out" value="Sign Out" onClick={ this.handleSignOutClick }>Sign Out</button>
+              : <button className="sign-in" value="Sign In" onClick={ this.handleSignInClick }>Sign In</button>
+            }
+              </td>
+              <td>
+                <h3>User Name: {this.props.displayName}</h3>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     )
   }

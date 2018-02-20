@@ -48,27 +48,29 @@ class MessageList extends Component {
 
 render() {
   return(
-    <div id="message-room">
+    <div className="message-room">
       <h2>{this.props.activeRoom}</h2>
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Send" />
-      </form>
-        <table id="message-board">
-          <tbody>
-            {
-                this.state.displayedMessages.map( (message, index) =>
-                <tr key={index} className="messages">
-                  <td>
-                    <h3>{ message.username }</h3><p>{ message.content }</p>
-                  </td>
-                </tr>
-                )
-            }
-          </tbody>
-        </table>
+      <table id="message-board">
+        <tbody>
+          {
+              this.state.displayedMessages.map( (message, index) =>
+              <tr key={index} className="messages">
+                <td>
+                  <h3>{ message.username }</h3><p>{ message.content }</p>
+                </td>
+              </tr>
+              )
+          }
+        </tbody>
+      </table>
+      <div className="message-form">
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            <input type="text" height="40px" value={this.state.value} onChange={this.handleChange} />
+          </label>
+          <button type="submit" value="Send" >Send</button>
+        </form>
+      </div>
     </div>
   )
 }
